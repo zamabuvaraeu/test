@@ -71,8 +71,7 @@ UuidObjectLibraries=-luuid
 GMonitorObjectLibraries=-lgmon
 GccObjectLibraries=-lmoldname -lgcc -lmingw32 -lmingwex -lgcc_eh
 WinApiObjectLibraries=-ladvapi32 -lcomctl32 -lcomdlg32 -lcrypt32 -lgdi32 -lgdiplus -limm32 -lkernel32 -lmsimg32 -lmsvcrt -lmswsock -lole32 -loleaut32 -lshell32 -lshlwapi -luser32 -lversion -lwinmm -lwinspool -lws2_32
-# ALL_OBJECT_LIBRARIES=$(WinApiObjectLibraries) $(GccObjectLibraries) $(GMonitorObjectLibraries)
-ALL_OBJECT_LIBRARIES=$(WinApiObjectLibraries)
+ALL_OBJECT_LIBRARIES=$(WinApiObjectLibraries) $(UuidObjectLibraries)
 
 ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 # GCC_COMPILER="$(ProgramFiles)\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin\gcc.exe"
@@ -88,6 +87,7 @@ ARCHIVE_COMPILER="$(ProgramFiles)\FreeBASIC\bin\win64\ar.exe"
 DLL_TOOL="$(ProgramFiles)\FreeBASIC\bin\win64\dlltool.exe"
 RESOURCE_COMPILER="$(ProgramFiles)\FreeBASIC\bin\win64\GoRC.exe"
 COMPILER_LIB_PATH="$(ProgramFiles)\FreeBASIC\lib\win64"
+FB_EXTRA="$(ProgramFiles)\FreeBASIC\lib\win64\fbextra.x"
 GCC_ARCHITECTURE=-m64 -march=x86-64
 TARGET_ASSEMBLER_ARCH=--64
 ENTRY_POINT=EntryPoint
@@ -105,6 +105,7 @@ GCC_LINKER="$(ProgramFiles)\FreeBASIC\bin\win32\ld.exe"
 ARCHIVE_COMPILER="$(ProgramFiles)\FreeBASIC\bin\win32\ar.exe"
 DLL_TOOL="$(ProgramFiles)\FreeBASIC\bin\win32\dlltool.exe"
 COMPILER_LIB_PATH="$(ProgramFiles)\FreeBASIC\lib\win32"
+FB_EXTRA="$(ProgramFiles)\FreeBASIC\lib\win32\fbextra.x"
 GCC_ARCHITECTURE=
 TARGET_ASSEMBLER_ARCH=--32
 ENTRY_POINT=_EntryPoint@0
@@ -142,8 +143,8 @@ GCC_COMPILER_PARAMETERS_DEBUG=$(GCC_WARNING) $(GCC_NOINCLUDE) $(GCC_ARCHITECTURE
 GCC_COMPILER_PARAMETERS_RELEASE=$(GCC_WARNING) $(GCC_NOINCLUDE) $(GCC_ARCHITECTURE) -masm=intel -S -Ofast
 GCC_ASSEMBLER_PARAMETERS_DEBUG=$(TARGET_ASSEMBLER_ARCH)
 GCC_ASSEMBLER_PARAMETERS_RELEASE=$(TARGET_ASSEMBLER_ARCH) --strip-local-absolute
-GCC_LINKER_PARAMETERS_DEBUG=-m $(PE_FILE_FORMAT) -subsystem $(EXETYPEKIND) -e $(ENTRY_POINT) $(DEFAULT_STACK_SIZE) -L $(COMPILER_LIB_PATH) -L "." --no-seh --nxcompat --gc-sections --print-gc-sections $(IMAGE_VERSION_MAJOR) $(IMAGE_VERSION_MINOR)
-GCC_LINKER_PARAMETERS_RELEASE=-m $(PE_FILE_FORMAT) -subsystem $(EXETYPEKIND) -e $(ENTRY_POINT) $(DEFAULT_STACK_SIZE) -L $(COMPILER_LIB_PATH) -L "." --no-seh --nxcompat --gc-sections --print-gc-sections $(IMAGE_VERSION_MAJOR) $(IMAGE_VERSION_MINOR) -s
+GCC_LINKER_PARAMETERS_DEBUG=-m $(PE_FILE_FORMAT) -subsystem $(EXETYPEKIND) $(FB_EXTRA) -e $(ENTRY_POINT) $(DEFAULT_STACK_SIZE) -L $(COMPILER_LIB_PATH) -L "." --no-seh --nxcompat --gc-sections --print-gc-sections $(IMAGE_VERSION_MAJOR) $(IMAGE_VERSION_MINOR)
+GCC_LINKER_PARAMETERS_RELEASE=-m $(PE_FILE_FORMAT) -subsystem $(EXETYPEKIND) $(FB_EXTRA) -e $(ENTRY_POINT) $(DEFAULT_STACK_SIZE) -L $(COMPILER_LIB_PATH) -L "." --no-seh --nxcompat --gc-sections --print-gc-sections $(IMAGE_VERSION_MAJOR) $(IMAGE_VERSION_MINOR) -s
 
 .PHONY: release debug all clean install uninstall configure
 
