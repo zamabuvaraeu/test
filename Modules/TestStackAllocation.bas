@@ -2,7 +2,6 @@
 #include once "win\ole2.bi"
 #include once "crt.bi"
 
-Const Caption = WStr("Test Alloca function")
 Const NewLine = WStr(!"\r\n")
 
 Type ValueBSTR
@@ -33,12 +32,18 @@ Function GetValueBSTRSize( _
 	
 End Function
 
+#ifdef __FB_64BIT__
 Declare Function _alloca cdecl Alias "__alloca"( _
    ByVal size As SIZE_T _
 )As Any Ptr
+#else
+Declare Function _alloca cdecl Alias "_alloca"( _
+   ByVal size As SIZE_T _
+)As Any Ptr
+#endif
 
-' #define Alloca(size) _alloca(size)
-#define Alloca(size) Allocate(size)
+#define Alloca(size) _alloca(size)
+' #define Alloca(size) Allocate(size)
 
 Function DisplayBstr( _
 		ByVal b As BSTR _
