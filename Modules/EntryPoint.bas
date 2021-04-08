@@ -1,5 +1,6 @@
 #include once "windows.bi"
 #include once "TestStackAllocation.bi"
+#include once "WriteString.bi"
 
 Const HelloWorld = WStr("Hello World!")
 Const Caption = WStr(!"Test Alloca function successful\r\n")
@@ -20,15 +21,11 @@ Function main Alias "main"()As Long
 		RetValue = 3
 	End If
 	
-	Dim NumberOfCharsWritten As DWORD = Any
-	Dim res2 As WINBOOL = WriteConsoleW( _
-		GetStdHandle(STD_OUTPUT_HANDLE), _
+	Dim hr As HRESULT = WriteStringW( _
 		StrPtr(Caption), _
-		Cast(DWORD, Len(Caption)), _
-		VarPtr(NumberOfCharsWritten), _
-		NULL _
+		Len(Caption) _
 	)
-	If res2 = 0 Then
+	If FAILED(hr) Then
 		Return 4
 	End If
 	
