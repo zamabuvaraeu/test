@@ -2,7 +2,7 @@
 #include once "TestStackAllocation.bi"
 #include once "WriteString.bi"
 
-Const HelloWorld = WStr("Hello World!")
+Const HelloWorld = WStr("Hello World!Hello World!")
 Const Caption = WStr(!"Test Alloca function successful\r\n")
 
 #ifdef WITHOUT_RUNTIME

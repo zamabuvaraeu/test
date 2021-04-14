@@ -4,6 +4,8 @@
 #include once "WriteString.bi"
 
 Const NewLine = WStr(!"\r\n")
+Const StartTestBstrStackAllocation = WStr(!"Start test BSTR on Stack Memory\r\n")
+Const EndTestBstrStackAllocation = WStr(!"Test BSTR on Stack Memory sucessful\r\n")
 
 #ifdef __FB_64BIT__
 Declare Function _alloca cdecl Alias "__alloca"( _
@@ -50,34 +52,6 @@ Constructor ValueBSTR(ByRef wsz As Const WString, ByVal Length As UINT)
 	)
 End Constructor
 
-Function GetCeiling16( _
-		ByVal Value As Integer _
-	)As Integer
-	
-	Return (Value \ 16) * 16 + 16
-	
-End Function
-
-Function GetValueBSTRSize( _
-		ByVal Length As Integer _
-	)As Integer
-	
-	Dim size As Integer = SizeOf(UINT) + (Length) * SizeOf(OLECHAR) + SizeOf(OLECHAR)
-	
-	Return GetCeiling16(size)
-	
-End Function
-
-Function GetWStringSize( _
-		ByVal Length As Integer _
-	)As Integer
-	
-	Dim size As Integer = (Length + 1) * SizeOf(WString)
-	
-	Return GetCeiling16(size)
-	
-End Function
-
 Function DisplayBstr( _
 		ByVal b As BSTR _
 	)As HRESULT
@@ -110,52 +84,101 @@ Function DisplayBstr( _
 	
 End Function
 
+Function TestStackAllocationBstr( _
+		ByVal pMemory As Any Ptr, _
+		ByVal Size As Integer, _
+		ByRef wsz As Const WString _
+	)As HRESULT
+	
+	PrintMemoryMap( _
+		pMemory, _
+		Size, _
+		False _
+	)
+	
+	WriteStringW( _
+		StrPtr(StartTestBstrStackAllocation), _
+		Len(StartTestBstrStackAllocation) _
+	)
+	
+	Dim pStackBSTR As ValueBSTR Ptr = New(pMemory) ValueBSTR(wsz)
+	
+	Dim b As BSTR = Cast(BSTR, @pStackBSTR->NullChar)
+	
+	Dim hr As HRESULT = DisplayBstr(b)
+	If FAILED(hr) Then
+		Return 1
+	End If
+	
+	WriteStringW( _
+		StrPtr(EndTestBstrStackAllocation), _
+		Len(EndTestBstrStackAllocation) _
+	)
+	
+	PrintMemoryMap( _
+		pMemory, _
+		Size, _
+		False _
+	)
+	
+	Return S_OK
+	
+End Function
+
+' Function TestStackAllocationPwsz( _
+		' ByVal pMemory As Any Ptr, _
+		' ByVal Size As Integer, _
+		' ByRef wsz As Const WString _
+	' )As HRESULT
+	
+' End Function
+
+' Function GetValueBSTRSize( _
+		' ByVal Length As Integer _
+	' )As Integer
+	
+	' Dim size As Integer = SizeOf(UINT) + (Length) * SizeOf(OLECHAR) + SizeOf(OLECHAR)
+	
+	' Return size
+	
+' End Function
+
+' Function GetWStringSize( _
+		' ByVal Length As Integer _
+	' )As Integer
+	
+	' Dim size As Integer = (Length + 1) * SizeOf(WString)
+	
+	' Return size
+	
+' End Function
+
+Function GetCeiling16( _
+		ByVal Value As Integer _
+	)As Integer
+	
+	Return (Value \ 16) * 16 + 16
+	
+End Function
+
 Function TestStackAllocationW( _
 		ByRef wsz As Const WString _
 	)As Integer
 	
-	Dim Length As Integer = lstrlenW(wsz)
+	Dim MemorySize As Integer = 512
+	
+	Dim AlignMemorySize As Integer = GetCeiling16(MemorySize)
+	
+	Dim pMemory As Any Ptr = Alloca(AlignMemorySize)
 	
 	Scope
-		Dim ValueBSTRBytesCount As Integer = GetValueBSTRSize(Length)
-		Dim pMemory1 As Any Ptr = Alloca(ValueBSTRBytesCount)
 		
-		Dim pStackBSTR As ValueBSTR Ptr = New(pMemory1) ValueBSTR(wsz)
-		
-		Dim b As BSTR = Cast(BSTR, @pStackBSTR->NullChar)
-		
-		Dim hr As HRESULT = DisplayBstr(b)
-		If FAILED(hr) Then
-			Return 1
-		End If
-	End Scope
-	
-	Scope
-		Dim WStringBytesCount As Integer = GetWStringSize(Length)
-		Dim pMemory2 As Any Ptr = Alloca(WStringBytesCount)
-		
-		Dim pwsz As WString Ptr = CPtr(WString Ptr, pMemory2)
-		CopyMemory( _
-			pwsz, _
-			StrPtr(wsz), _
-			(Length + 1) * SizeOf(WString) _
+		TestStackAllocationBstr( _
+			pMemory, _
+			MemorySize, _
+			wsz _
 		)
 		
-		Dim hr2 As HRESULT = WriteStringW( _
-			pwsz, _
-			Length _
-		)
-		If FAILED(hr2) Then
-			Return 2
-		End If
-		
-		Dim hr3 As HRESULT = WriteStringW( _
-			StrPtr(NewLine), _
-			Len(NewLine) _
-		)
-		If FAILED(hr3) Then
-			Return 2
-		End If
 	End Scope
 	
 	Return 0
