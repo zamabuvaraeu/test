@@ -13,4 +13,10 @@ Declare Function WriteStringA Alias "WriteStringA"( _
 	ByVal Length As Integer _
 )As HRESULT
 
+Declare Sub PrintMemoryMap( _
+	ByVal pMemory As Any Ptr, _
+	ByVal Size As Integer, _
+	ByVal TreatDataAsUnicode As Boolean _
+)
+
 #endif
