@@ -1,0 +1,8 @@
+# Objects And Execitable
+obj/
+bin/
+
+run_gdb.cmd
+run_make.cmd
+sendtochat.cmd
+setcompilerpath*.cmd

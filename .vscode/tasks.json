@@ -1,0 +1,98 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Create Makefile",
+			"type": "process",
+			"command": "cscript.exe",
+			"args": [
+				"//nologo",
+				"C:\\Programming\\FreeBASIC Projects\\ProgrammingStyle\\CreateMakefile\\CreateMakefile.vbs",
+				"/out:Station922",
+				"/unicode:false",
+				"/wrt:false",
+				"/addressaware:true",
+				"/makefile:Makefile",
+				"/fbc:fbc64",
+				"/fbc-path:C:\\Program Files (x86)\\FreeBASIC-1.10.0-winlibs-gcc-9.3.0",
+				"/src:src",
+				"/module:Main",
+				"/exetype:exe",
+				/* "/subsystem:windows", */
+				"/subsystem:console",
+				"/emitter:gcc",
+				"/fix:true",
+				"/multithreading:false",
+				"/pedantic:true"
+
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind":"build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Build project",
+			"type": "process",
+			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
+			"args": [
+				"-m", "src\\Main",
+				"-x", "Station922.exe",
+				"-gen", "gcc",
+				"-O", "3",
+				"-v",
+				"-Wc", "-ffunction-sections,-fdata-sections",
+				"-Wl", "--gc-sections",
+				"src\\*.bas",
+				"src\\*.RC"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "none",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Build debug version",
+			"type": "process",
+			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
+			"args": [
+				"-O", "0",
+				"-arch", "native",
+				"-g",
+				"-R",
+				"-v",
+				"-w", "all",
+				"-w", "error",
+				"-m", "file",
+				"file.bas"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Build release version",
+			"type": "process",
+			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
+			"args": [
+				"-O", "3",
+				"-arch", "native",
+				"-RR",
+				"-v",
+				"-w", "all",
+				"-w", "error",
+				"-m", "file",
+				"file.bas"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		}
+	]
+}
