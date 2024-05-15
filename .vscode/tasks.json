@@ -93,6 +93,67 @@
 				"kind": "build",
 				"isDefault": false
 			}
+		},
+		{
+			/* Название задачи, придумываем говорящее название */
+			"label": "Build project Linux",
+
+			/* Оставляем как есть */
+			"type": "shell",
+
+			/* Путь к пакетному файлу с командами компиляции */
+			"command": "/home/mabu/Загрузки/FreeBASIC-1.10.1-ubuntu-18.04-x86_64/bin/fbc",
+
+			/* Если у пакетного файла есть параметры — пишем их тут */
+			"args": [
+				"-v",
+				"-g",
+				"-gen", "gcc",
+				"-x", "./bin/Debug/x64/inputString",
+				"./src/inputString.bas"
+			],
+
+			/* Рабочий каталог */
+			"options": {
+				"cwd": "./"
+			},
+
+			/* Оставляем как есть */
+			"problemMatcher": [],
+
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+		},
+		{
+			/* Название задачи, придумываем говорящее название */
+			"label": "Run project Linux",
+
+			/* Оставляем как есть */
+			"type": "process",
+
+			/* Путь к пакетному файлу с командами компиляции */
+			"command": "xterm",
+
+			/* Если у пакетного файла есть параметры — пишем их тут */
+			"args": [
+				"-e",
+				"${workspaceFolder}/file",
+				"&"
+			],
+
+			/* Рабочий каталог */
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+
+			/* Оставляем как есть */
+			"problemMatcher": [],
+			"group": {
+				"kind": "none",
+				"isDefault": true
+			},
 		}
 	]
 }

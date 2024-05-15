@@ -38,6 +38,84 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        },
+		{
+			/* Название конфигурации */
+			"name": "Запустить file",
+
+			/* тип отладчика */
+			"type": "cppdbg",
+
+			/* Режим исполнения — запуск файла */
+			"request": "launch",
+
+			/* Путь исполняемому файлу */
+			"program": "${workspaceFolder}/bin/Debug/x64/inputString",
+
+			/* Аргументы */
+			"args": [],
+
+			/* Остановка на первой строке главного модуля */
+			"stopAtEntry": true,
+
+			/* Текущий каталог */
+			"cwd": "${fileDirname}",
+
+			/* Если программа получает ввод с консоли
+			её необходимо запустить в отдельном окне
+			в этом случае ставим true */
+			"externalConsole": false,
+
+			"MIMode": "gdb",
+
+			/* Путь к отладчику GDB */
+			"miDebuggerPath": "gdb",
+
+			"setupCommands": [
+				{
+					"description": "Включить автоматическое форматирование для gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			]
+		},
+		{
+			/* Название конфигурации */
+			"name": "Присоединиться к file",
+
+			/* тип отладчика */
+			"type": "cppdbg",
+
+			/* Режим исполнения — запуск файла */
+			"request": "attach",
+
+			/* Путь исполняемому файлу */
+			"program": "${workspaceFolder}/bin/Debug/x64/inputString",
+
+			/* Для подключаемых файлов нельзя указывать аргументы */
+			/* "args": [], */
+
+			/* Мы не можем останавливаться на точке входа */
+			/* "stopAtEntry": true, */
+
+			/* Мы не можем указать рабочий каталог */
+			/* "cwd": "${fileDirname}", */
+
+			/* Мы не можем указать внешнюю консоль */
+			/* "externalConsole": false, */
+
+			"MIMode": "gdb",
+
+			/* Путь к отладчику GDB */
+			"miDebuggerPath": "gdb",
+
+			"setupCommands": [
+				{
+					"description": "Включить автоматическое форматирование для gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			]
+		}
     ]
 }
