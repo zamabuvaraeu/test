@@ -6,7 +6,7 @@ Dim user_name As ZString * (USER_NAME_CAPACITY + 1) = Any
 Dim user_age As Integer = Any
 
 Print "Enter your name"
-scanf("%s", @user_name)
+scanf(!"%255[^\r\n]", @user_name)
 
 Print "Enter your age"
 scanf("%d", @user_age)
