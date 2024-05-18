@@ -33,28 +33,7 @@
 			}
 		},
 		{
-			"label": "Build project",
-			"type": "process",
-			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
-			"args": [
-				"-m", "src\\Main",
-				"-x", "Station922.exe",
-				"-gen", "gcc",
-				"-O", "3",
-				"-v",
-				"-Wc", "-ffunction-sections,-fdata-sections",
-				"-Wl", "--gc-sections",
-				"src\\*.bas",
-				"src\\*.RC"
-			],
-			"problemMatcher": [],
-			"group": {
-				"kind": "none",
-				"isDefault": true
-			}
-		},
-		{
-			"label": "Build debug version",
+			"label": "Build debug Windows",
 			"type": "process",
 			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
 			"args": [
@@ -66,7 +45,7 @@
 				"-w", "all",
 				"-w", "error",
 				"-m", "file",
-				"file.bas"
+				"src/file.bas"
 			],
 			"problemMatcher": [],
 			"group": {
@@ -75,18 +54,37 @@
 			}
 		},
 		{
-			"label": "Build release version",
+			"label": "Build release Windows",
 			"type": "process",
 			"command": "C:\\Program Files (x86)\\FreeBASIC-1.10.1-winlibs-gcc-9.3.0\\fbc64.exe",
 			"args": [
-				"-O", "3",
+				"-O", "0",
 				"-arch", "native",
-				"-RR",
 				"-v",
 				"-w", "all",
 				"-w", "error",
 				"-m", "file",
-				"file.bas"
+				"src/file.bas"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "Build fbc-mod version",
+			"type": "process",
+			"command": "C:\\Programming\\FreeBASIC Projects\\fbc-modified\\bin\\Release\\x64\\fbc64.exe",
+			"args": [
+				"-O", "0",
+				"-arch", "native",
+				"-r",
+				"-v",
+				"-w", "all",
+				"-w", "error",
+				"-m", "file",
+				"src/file.bas"
 			],
 			"problemMatcher": [],
 			"group": {
@@ -96,7 +94,7 @@
 		},
 		{
 			/* Название задачи, придумываем говорящее название */
-			"label": "Build project Linux",
+			"label": "Build debug Linux",
 
 			/* Оставляем как есть */
 			"type": "shell",
