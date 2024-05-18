@@ -1,6 +1,8 @@
 #include once "crt.bi"
 
-Dim user_name As ZString * 265 = Any
+Const USER_NAME_CAPACITY = 255
+
+Dim user_name As ZString * (USER_NAME_CAPACITY + 1) = Any
 Dim user_age As Integer = Any
 
 Print "Enter your name"
